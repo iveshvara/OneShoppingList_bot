@@ -36,7 +36,7 @@ async def menu(message: types.Message):
 async def menu_kb():
     inline_kb = InlineKeyboardMarkup(row_width=1)
     inline_kb.add(InlineKeyboardButton(text='Shopping', callback_data='shopping'))
-    inline_kb.add(InlineKeyboardButton(text='Make list', callback_data='make list'))
+    inline_kb.add(InlineKeyboardButton(text='Make a list', callback_data='make а list'))
     inline_kb.add(InlineKeyboardButton(text='Share а list', callback_data='share а list'))
     return inline_kb
 

@@ -5,7 +5,7 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from DataBase import sqlite_db
 
 
-@dp.callback_query_handler(text='make list')
+@dp.callback_query_handler(text='make а list')
 async def make_list(callback: types.CallbackQuery):
     inline_kb = InlineKeyboardMarkup(row_width=1)
     records = await sqlite_db.sql_get_stores(callback.from_user.id)
@@ -48,7 +48,7 @@ async def delete_stores(callback: types.CallbackQuery):
     if records is not None:
         for row in records:
             inline_kb.add(InlineKeyboardButton(text=row[1], callback_data='confirm delete store ' + str(row[0])))
-    inline_kb.add(InlineKeyboardButton(text='<< Back', callback_data='make list'))
+    inline_kb.add(InlineKeyboardButton(text='<< Back', callback_data='make а list'))
     await callback.message.edit_text('*Stores and all their elements will be deleted:*', parse_mode="MarkdownV2",
                                      reply_markup=inline_kb)
 
@@ -64,7 +64,7 @@ async def confirm_delete_store(callback: types.CallbackQuery):
         text = text + '— ' + row[1] + '\n'
 
     inline_kb.row(InlineKeyboardButton(text='delete this store', callback_data='delete store ' + id_store))
-    inline_kb.add(InlineKeyboardButton(text='<< Back', callback_data='make list'))
+    inline_kb.add(InlineKeyboardButton(text='<< Back', callback_data='make а list'))
 
     await callback.message.edit_text(text, parse_mode="MarkdownV2", reply_markup=inline_kb)
 
@@ -78,7 +78,7 @@ async def delete_store(callback: types.CallbackQuery):
     if records is not None:
         for row in records:
             inline_kb.add(InlineKeyboardButton(text=row[1], callback_data='delete store ' + str(row[0])))
-    inline_kb.add(InlineKeyboardButton(text='<< Back', callback_data='make list'))
+    inline_kb.add(InlineKeyboardButton(text='<< Back', callback_data='make а list'))
     await callback.message.edit_text('*Stores and all their elements will be deleted:*', parse_mode="MarkdownV2",
                                      reply_markup=inline_kb)
 
@@ -123,7 +123,7 @@ async def get_items_of_handing_by_id(message):
     massive = [InlineKeyboardButton(text='<Add items>', callback_data='making add item'),
                InlineKeyboardButton(text='<Delete items>', callback_data='making delete items')]
     inline_kb.row(*massive)
-    inline_kb.add(InlineKeyboardButton(text='<< Back', callback_data='make list'))
+    inline_kb.add(InlineKeyboardButton(text='<< Back', callback_data='make а list'))
 
     await message.edit_text(text, parse_mode="MarkdownV2", reply_markup=inline_kb)
 
