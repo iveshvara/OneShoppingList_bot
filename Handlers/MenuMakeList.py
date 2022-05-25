@@ -16,7 +16,7 @@ async def make_list(callback: types.CallbackQuery):
     inline_kb.add(InlineKeyboardButton(text='<add store>', callback_data='add store'))
     inline_kb.add(InlineKeyboardButton(text='<delete store>', callback_data='delete stores'))
     inline_kb.add(InlineKeyboardButton(text='<reset list>', callback_data='reset list'))
-    inline_kb.add(InlineKeyboardButton(text='<< Menu', callback_data='menu'))
+    inline_kb.add(InlineKeyboardButton(text='<< Menu', callback_data='menu make а list'))
     await callback.message.edit_text('*Stores:*', parse_mode="MarkdownV2", reply_markup=inline_kb)
 
 
@@ -170,7 +170,8 @@ async def making_add_item(callback: types.CallbackQuery):
     await Config.StatesGroupList.item.set()
     inline_kb = InlineKeyboardMarkup(row_width=1)
     inline_kb.add(InlineKeyboardButton(text='<cancel>', callback_data='cancel add item'))
-    await callback.message.edit_text('Please enter a list of items:', reply_markup=inline_kb)
+    Config.main_message = callback.message
+    await Config.main_message.edit_text('Please enter a list of items:', reply_markup=inline_kb)
 
 
 @dp.callback_query_handler(state=Config.StatesGroupList)
@@ -209,14 +210,14 @@ async def making_delete_items(callback: types.CallbackQuery):
 async def add_store(callback: types.CallbackQuery):
     id_item = callback.data.replace('making delete item ', '')
     await sqlite_db.sql_update_item(id_item, -1)
-    await get_items_of_handing_back(callback)
     await making_delete_items(callback)
 
 
 @dp.callback_query_handler(text='delete selected items')
-async def get_items_of_handing_back(callback: types.CallbackQuery):
+async def delete_selected_items(callback: types.CallbackQuery):
     id_store = await sqlite_db.sql_get_id_store(callback.from_user.id)
     await sqlite_db.sql_delete_item(id_store)
+    await making_delete_items(callback)
 
 
 def register_handlers(dp: Dispatcher):

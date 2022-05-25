@@ -123,12 +123,17 @@ async def sql_update_item(id_item, status):
     connect.commit()
 
 
-async def sql_update_all_item_in_store(user):
-    cursor.execute("SELECT items.id_item FROM items WHERE id_store IN(\
-                       	SELECT stores.id_store FROM stores WHERE id_list IN (\
-                           SELECT users.id_list FROM users WHERE users.user = ?))", (user,))
+async def sql_update_all_item_in_store(user, only_purchased = False):
+    # cursor.execute("SELECT items.id_item FROM items WHERE items.status = 2 AND id_store IN(\
+    #                    	SELECT stores.id_store FROM stores WHERE id_list IN (\
+    #                        SELECT users.id_list FROM users WHERE users.user = ?))", (user,))
+    cursor.execute("SELECT items.id_item, items.status FROM items WHERE id_store IN(\
+                           	SELECT stores.id_store FROM stores WHERE id_list IN (\
+                               SELECT users.id_list FROM users WHERE users.user = ?))", (user,))
     records = cursor.fetchall()
     for i in records:
+        if only_purchased and i[1] != 2:
+            continue
         await sql_update_item(i[0], 0)
 
 

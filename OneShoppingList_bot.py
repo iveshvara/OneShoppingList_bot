@@ -29,6 +29,11 @@ async def handler_menu(callback: types.CallbackQuery):
     await callback.message.edit_text('Wellcome.', reply_markup=await menu_kb())
 
 
+@dp.callback_query_handler(text='menu make а list')
+async def add_store(callback: types.CallbackQuery):
+    await sqlite_db.sql_update_all_item_in_store(callback.from_user.id, True)
+    await handler_menu(callback)
+
 async def menu(message: types.Message):
     Config.main_message = await message.answer('Wellcome.', reply_markup=await menu_kb())
 
