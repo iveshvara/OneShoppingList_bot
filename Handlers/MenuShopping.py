@@ -1,8 +1,8 @@
 from aiogram import types
-from create_bot import dp
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from DataBase import sqlite_db
 from Handlers import CommonFunctions
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from create_bot import dp
 
 
 @dp.callback_query_handler(text='shopping')
